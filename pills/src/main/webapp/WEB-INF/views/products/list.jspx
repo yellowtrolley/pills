@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_org_pablog_pills_domain_Product" items="${products}" z="c22VRXfvRK4sL6Qe9EgJ2JrufSw=">
+        <table:table data="${products}" id="l_org_pablog_pills_domain_Product" path="/products" z="m/Qc/Q3K0fx5SaDGiQVUCy8nvSU=">
+            <table:column id="c_org_pablog_pills_domain_Product_name" property="name" z="8ZZLsbEce9ny+QyEd0yTy8YkIl4="/>
+            <table:column id="c_org_pablog_pills_domain_Product_morningDose" property="morningDose" z="EfK5BbK0Nt3ChkA3Z9MFx7+z3pk="/>
+            <table:column id="c_org_pablog_pills_domain_Product_middayDose" property="middayDose" z="/G00+UUB96L6wBADWMK699o6Cbw="/>
+            <table:column id="c_org_pablog_pills_domain_Product_nightDose" property="nightDose" z="QUN8ksBrn2fmYinNGQha2OUvrqc="/>
+        </table:table>
+    </page:list>
+</div>

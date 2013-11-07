@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_org_pablog_pills_domain_Product" object="${product}" path="/products" z="+nUSViwFBczineURgf1l1g9veYQ=">
+        <field:display field="name" id="s_org_pablog_pills_domain_Product_name" object="${product}" z="sxV3al0laHirHXjIg1LDK5DH4eU="/>
+        <field:display field="morningDose" id="s_org_pablog_pills_domain_Product_morningDose" object="${product}" z="i6aZ+n8K/4ag3xIjFIYHcrnZrxI="/>
+        <field:display field="middayDose" id="s_org_pablog_pills_domain_Product_middayDose" object="${product}" z="ON4CDR2wvoIeDZKsQET0mouiHro="/>
+        <field:display field="nightDose" id="s_org_pablog_pills_domain_Product_nightDose" object="${product}" z="Uy1qwMSe9nVnNBwL8Jp371CY8cU="/>
+    </page:show>
+</div>

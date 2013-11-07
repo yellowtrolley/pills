@@ -1,0 +1,32 @@
+project --topLevelPackage org.pablog.pills --projectName pills --java 7 --packaging WAR
+mongo setup --databaseName iAfVC1yQxSpqqpP1spNw --host paulo.mongohq.com --port 10096 --username salva --password 333333
+
+entity mongo --class ~.domain.Product --testAutomatically
+field string --fieldName name
+field number --fieldName morningDose --type double
+field number --fieldName middayDose --type double
+field number --fieldName nightDose --type double
+
+
+entity mongo --class ~.domain.ProductTaken --testAutomatically
+field reference --type ~.domain.Product --fieldName product
+field boolean --fieldName morning
+field boolean --fieldName midday
+field boolean --fieldName night
+
+entity mongo --class ~.domain.Day --testAutomatically
+field string --fieldName theDay
+field list --type ~.domain.ProductTaken --fieldName productTakens
+
+repository mongo --interface ~.repositories.ProductRepository --entity ~.domain.Product
+repository mongo --interface ~.repositories.DayRepository --entity ~.domain.Day
+repository mongo --interface ~.repositories.ProductTakenRepository --entity ~.domain.ProductTaken
+json all 
+
+web mvc setup
+web mvc language --code es
+web mvc scaffold --class ~.web.ProductController --backingType ~.domain.Product 
+web mvc scaffold --class ~.web.DayController --backingType ~.domain.Day --disallowedOperations create
+web mvc scaffold --class ~.web.ProductTakenController --backingType ~.domain.ProductTaken --disallowedOperations create
+web mvc json all 
+security setup
