@@ -17,6 +17,11 @@
 	
   	<body class="tundra spring">
    		<div id="wrapper">
+   			<spring:url value="/resources/images/ajax-loader.gif" var="loading_img_url"/>
+            <div id="loading" style="display:none">
+                <img src="${loading_img_url}"/>
+            </div>
+            <div id="error"/>
 		    <tiles:insertAttribute name="header" ignore="true" />
 		    <tiles:insertAttribute name="menu" ignore="true" />   
 		    <div id="main">
@@ -25,4 +30,14 @@
 		    </div>
 		</div>
 	</body>
+	<script language="JavaScript" type="text/javascript"><![CDATA[
+		$(function() {
+			$("#loading").ajaxStart(function () {
+				$(this).show();
+			});
+			$("#loading").ajaxStop(function () {
+			    $(this).hide();
+			});
+		});
+	]]></script>
 </html>

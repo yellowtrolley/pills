@@ -1,0 +1,45 @@
+package org.pablog.pills.security;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.pablog.pills.domain.PUser;
+import org.pablog.pills.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+public class DefaultUserDetailsService  implements UserDetailsService {
+	@Autowired UserRepository userRepository;
+	@Autowired StandardPasswordEncoder pwdEncoder;
+	
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
+		PUser pUser = null;
+		try{
+			pUser = userRepository.findByUsername(username);
+		} catch (Exception e) {
+			throw new UsernameNotFoundException("Problem retrieving User from DB", e);
+		}
+		if(pUser == null) {
+			throw new UsernameNotFoundException("User not found");
+		}
+		
+		
+		return new org.springframework.security.core.userdetails.User(pUser.getUsername(), pUser.getPassword(), true, true, true, true, getAuthorities());
+	}
+	
+	private Collection<? extends GrantedAuthority> getAuthorities() {
+		List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
+		authorities.add(new SimpleGrantedAuthority("ADMIN"));
+		return authorities;
+	}
+}
