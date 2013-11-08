@@ -57,7 +57,7 @@ public class ProductIntegrationTest {
         Assert.assertNotNull("Find all method for 'Product' illegally returned null", result);
         Assert.assertTrue("Find all method for 'Product' failed to return any data", result.size() > 0);
     }
-
+/*
 	@Test
     public void testFindEntries() {
         Assert.assertNotNull("Data on demand for 'Product' failed to initialize correctly", dod.getRandomProduct());
@@ -69,7 +69,7 @@ public class ProductIntegrationTest {
         Assert.assertNotNull("Find entries method for 'Product' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'Product' returned an incorrect number of entries", count, result.size());
     }
-
+*/
 	@Test
     public void testSave() {
         Assert.assertNotNull("Data on demand for 'Product' failed to initialize correctly", dod.getRandomProduct());
