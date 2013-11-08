@@ -13,10 +13,25 @@
 		
 		<spring:message code="application_name" var="app_name" htmlEscape="false"/>
 		<title><spring:message code="welcome_h3" arguments="${app_name}" /></title>
+		<script language="JavaScript" type="text/javascript"><![CDATA[
+			$(document).ready(function() {
+				$("#loading").ajaxStart(function () {
+					$(this).show();
+				});
+				$("#loading").ajaxStop(function () {
+				    $(this).hide();
+				});
+			});
+	]]></script>
 	</head>
 	
   	<body class="tundra spring">
    		<div id="wrapper">
+   			<spring:url value="/resources/images/ajax-loader.gif" var="loading_img_url"/>
+            <div id="loading" style="display:none">
+                <img src="${loading_img_url}"/>
+            </div>
+            <div id="error"/>
 		    <tiles:insertAttribute name="header" ignore="true" />
 		    <tiles:insertAttribute name="menu" ignore="true" />   
 		    <div id="main">
