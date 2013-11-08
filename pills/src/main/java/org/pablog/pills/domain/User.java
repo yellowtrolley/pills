@@ -1,13 +1,11 @@
 package org.pablog.pills.domain;
 
-import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-public class PUser {
-	Logger logger = Logger.getLogger(this.getClass());
+public class User {
 
 	@Id
     private ObjectId id;

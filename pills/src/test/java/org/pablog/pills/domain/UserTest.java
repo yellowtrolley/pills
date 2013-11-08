@@ -27,12 +27,12 @@ public class UserTest {
 	@Test
 	public void testSave() {
 		try {
-			PUser pUser = new PUser();
-			pUser.setPassword("fooUser");
-			pUser.setUsername("fooUser");
-			userRepository.save(pUser);
+			User user = new User();
+			user.setPassword("fooUser");
+			user.setUsername("fooUser");
+			userRepository.save(user);
 			
-			Assert.assertNotNull("Expected 'User' identifier to no longer be null", pUser.getId());
+			Assert.assertNotNull("Expected 'User' identifier to no longer be null", user.getId());
         } catch (final ConstraintViolationException e) {
             final StringBuilder msg = new StringBuilder();
             for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {
