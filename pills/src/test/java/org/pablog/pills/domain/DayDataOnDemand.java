@@ -1,5 +1,4 @@
 package org.pablog.pills.domain;
-import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Configurable
 public class DayDataOnDemand {
-
 	private Random rnd = new SecureRandom();
 
 	private List<Day> data;

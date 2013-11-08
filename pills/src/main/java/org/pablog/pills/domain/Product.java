@@ -34,7 +34,17 @@ public class Product {
      */
     private double nightDose;
 
+    
 
+	public Product() {}
+
+	public Product(String name, double morningDose, double middayDose, double nightDose) {
+		super();
+		this.name = name;
+		this.morningDose = morningDose;
+		this.middayDose = middayDose;
+		this.nightDose = nightDose;
+	}
 
 	public String toJson() {
         return new JSONSerializer().exclude("*.class").serialize(this);

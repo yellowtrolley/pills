@@ -90,10 +90,20 @@ public class ProductDataOnDemand {
         }
         
         data = new ArrayList<Product>();
-        for (int i = 0; i < 10; i++) {
-            Product obj = getNewTransientProduct(i);
+//        for (int i = 0; i < 10; i++) {
+//            Product obj = getNewTransientProduct(i);
+        Product p1 = new Product("Domperidona 10 mg",1,1,1);
+        Product p2 = new Product("Plenur 400 mg",0.5,0,1);
+        Product p3 = new Product("Labileno 100 mg",1,0,1);
+        Product p4 = new Product("Lansoprazon 30 mg",1, 0,1);
+        Product p5 = new Product("Rivotril 0,5 mg",1,1,2);
+        Product p6 = new Product("Zyprexa 10 mg",1,0,1);
+        Product p7 = new Product("Noctamid 1 mg",0,0,1);
+        Product p8 = new Product("Mysoline  250 mg",0,0,1);
             try {
-                productRepository.save(obj);
+//                productRepository.save(obj);
+            	productRepository.save(p1);
+            	productRepository.save(new Product("Domperidona 10 mg",1, 1,1));
             } catch (final ConstraintViolationException e) {
                 final StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {
@@ -102,7 +112,15 @@ public class ProductDataOnDemand {
                 }
                 throw new IllegalStateException(msg.toString(), e);
             }
-            data.add(obj);
-        }
+//            data.add(obj);
+            data.add(p1);
+            data.add(p2);
+            data.add(p3);
+            data.add(p4);
+            data.add(p5);
+            data.add(p6);
+            data.add(p7);
+            data.add(p8);
+//        }
     }
 }

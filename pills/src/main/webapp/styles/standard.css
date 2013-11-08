@@ -41,7 +41,7 @@ body {
 	position:relative;
 	float:left;  	
 	left:0px;
-	width:220px;
+	/* width:220px; */
 	margin-right:15px;
 }
 
@@ -241,8 +241,9 @@ table table {
 }
 
 table td,table th {
-	padding: 2px;
+	padding: 5px;
 	border: 1px solid #CCCCCC;
+	font-size: 1.2em;
 }
 
 table td form {
@@ -252,8 +253,7 @@ table td form {
 }
 
 table th {
-	font-size: 0.9em;
-	text-align: left;
+	text-align: center;
 	font-weight: bold;
 	color: #FFF;
 	background: #999;
@@ -370,4 +370,17 @@ fieldset th {
 .flag {
 	height: 11px;
 	width: 16px;
+}
+
+#header img {
+    margin-right: 20px;
+}
+
+#header span {
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+.alignCenter {
+	text-align:center;
 }
