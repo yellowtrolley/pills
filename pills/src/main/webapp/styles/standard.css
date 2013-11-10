@@ -384,3 +384,13 @@ fieldset th {
 .alignCenter {
 	text-align:center;
 }
+
+#loading {
+	position:absolute;
+    width:32px; /*image width */
+    height:32px; /*image height */
+    left:50%; 
+    top:50%;
+    margin-left:-16px; /*image width/2 */
+    margin-top:-16px; /*image height/2 */
+}
