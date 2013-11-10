@@ -1,2 +1,4 @@
 /target
 /src/main/resources/META-INF/spring/database.properties
+log.roo
+pills.roo
