@@ -20,12 +20,11 @@ public class Day {
 	@Id
     private ObjectId id;
 
-    /**
-     */
-    private String theDay;
+	@DBRef
+	private User user;
 
-    /**
-     */
+	private String theDate;
+    
     @DBRef
     @CascadeSave
     private List<ProductTaken> productTaken = new ArrayList<ProductTaken>();
@@ -62,14 +61,6 @@ public class Day {
     	this.id = id;
     }
 
-	public String getTheDay() {
-        return this.theDay;
-    }
-
-	public void setTheDay(String theDay) {
-        this.theDay = theDay;
-    }
-
 	public List<ProductTaken> getProductTaken() {
         return this.productTaken;
     }
@@ -81,4 +72,20 @@ public class Day {
 	public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public String getTheDate() {
+		return theDate;
+	}
+
+	public void setTheDate(String theDate) {
+		this.theDate = theDate;
+	}
 }

@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Configurable
 @Component
 public class ProductDataOnDemand {
-
+/*
 	private Random rnd = new SecureRandom();
 
 	private List<Product> data;
@@ -123,4 +123,5 @@ public class ProductDataOnDemand {
             data.add(p8);
 //        }
     }
+    */
 }

@@ -15,11 +15,12 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath*:/META-INF/spring/applicationContext*.xml")
-@Configurable
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(locations = "classpath*:/META-INF/spring/applicationContext*.xml")
+//@Configurable
 public class ProductIntegrationTest {
 
+	/*
     @Test
     public void testMarkerMethod() {
     }
@@ -57,7 +58,6 @@ public class ProductIntegrationTest {
         Assert.assertNotNull("Find all method for 'Product' illegally returned null", result);
         Assert.assertTrue("Find all method for 'Product' failed to return any data", result.size() > 0);
     }
-/*
 	@Test
     public void testFindEntries() {
         Assert.assertNotNull("Data on demand for 'Product' failed to initialize correctly", dod.getRandomProduct());
@@ -69,7 +69,6 @@ public class ProductIntegrationTest {
         Assert.assertNotNull("Find entries method for 'Product' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'Product' returned an incorrect number of entries", count, result.size());
     }
-*/
 	@Test
     public void testSave() {
         Assert.assertNotNull("Data on demand for 'Product' failed to initialize correctly", dod.getRandomProduct());
@@ -99,4 +98,5 @@ public class ProductIntegrationTest {
         productRepository.delete(obj);
         Assert.assertNull("Failed to remove 'Product' with identifier '" + id + "'", productRepository.findById(id));
     }
+	 */
 }

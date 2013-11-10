@@ -2,7 +2,7 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <table:table data="${days}" id="l_org_pablog_pills_domain_Day" path="/days" z="i6tu8tqknRopJQH7G/Yrmv5enEs=">
-        <table:column id="c_org_pablog_pills_domain_Day_theDay" property="theDay" z="5I5xmgSkQIEhc1xw6rqAe5g262w="/>
+    <table:table data="${days}" id="l_org_pablog_pills_domain_Day" path="/days" z="i6tu8tqknRopJQH7G/Yrmv5enEs=" delete="false" create="false" update="false">
+        <table:column id="c_org_pablog_pills_domain_Day_theDate" property="theDate" z="5I5xmgSkQIEhc1xw6rqAe5g262w="/>
     </table:table>
 </div>

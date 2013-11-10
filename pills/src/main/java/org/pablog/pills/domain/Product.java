@@ -18,20 +18,12 @@ public class Product {
 	@Id
     private ObjectId id;
 
-    /**
-     */
     private String name;
 
-    /**
-     */
     private double morningDose;
 
-    /**
-     */
     private double middayDose;
 
-    /**
-     */
     private double nightDose;
 
     

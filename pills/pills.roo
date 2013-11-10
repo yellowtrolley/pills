@@ -15,7 +15,7 @@ field boolean --fieldName midday
 field boolean --fieldName night
 
 entity mongo --class ~.domain.Day --testAutomatically
-field string --fieldName theDay
+field string --fieldName theDate
 field list --type ~.domain.ProductTaken --fieldName productTakens
 
 repository mongo --interface ~.repositories.ProductRepository --entity ~.domain.Product

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Configurable
 public class DayDataOnDemand {
+	/*
 	private Random rnd = new SecureRandom();
 
 	private List<Day> data;
@@ -26,13 +27,13 @@ public class DayDataOnDemand {
 
 	public Day getNewTransientDay(int index) {
         Day obj = new Day();
-        setTheDay(obj, index);
+        setTheDate(obj, index);
         return obj;
     }
 
-	public void setTheDay(Day obj, int index) {
-        String theDay = "theDay_" + index;
-        obj.setTheDay(theDay);
+	public void setTheDate(Day obj, int index) {
+        String theDate = "theDate_" + index;
+        obj.setTheDate(theDate);
     }
 
 	public Day getSpecificDay(int index) {
@@ -86,4 +87,5 @@ public class DayDataOnDemand {
             data.add(obj);
         }
     }
+    */
 }

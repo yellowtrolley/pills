@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+<div xmlns:spring="http://www.springframework.org/tags" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
@@ -24,14 +24,14 @@
 	  		});
 	  	});
     </script>
-    <field:display render="false" field="theDay" id="s_org_pablog_pills_domain_Day_theDay" object="${day}" z="ejPp0H1/MJITVq6isR4vDfN8R2E="/>
+    <field:display render="false" field="theDate" id="s_org_pablog_pills_domain_Day_theDate" object="${day}" z="ejPp0H1/MJITVq6isR4vDfN8R2E="/>
     <table>
         <thead>
             <tr>
                 <th/>
-                <th>Mañana</th>
-                <th>Medio día</th>
-                <th>Noche</th>
+                <th><spring:message code="label_org_pablog_pills_domain_morning" /></th>
+                <th><spring:message code="label_org_pablog_pills_domain_midday" /></th>
+                <th><spring:message code="label_org_pablog_pills_domain_night" /></th>
             </tr>
         </thead>
         <tbody>
@@ -41,6 +41,7 @@
                     <c:out value="${pt.product.name}"/>
                 </td>
                 <td class="alignCenter">
+                  <c:if test="${pt.product.morningDose > 0}">
                     <c:out value="${pt.product.morningDose}   "/>
                     <c:choose>
                      <c:when test="${day.productTaken[status.index].morning}">
@@ -50,8 +51,10 @@
                       <input id="_${pt.id}_id_morning" name="_${pt.id}_morning_name" value="${day.productTaken[status.index].morning}" type="checkbox" />
                      </c:otherwise>
                     </c:choose>
+                  </c:if>
                 </td>
                 <td class="alignCenter">
+                  <c:if test="${pt.product.middayDose > 0}">
                     <c:out value="${pt.product.middayDose}   "/>
                     <c:choose>
                      <c:when test="${day.productTaken[status.index].midday}">
@@ -61,8 +64,10 @@
                       <input id="_${pt.id}_id_midday" name="_${pt.id}_midday_name" value="${day.productTaken[status.index].midday}" type="checkbox"/>
                      </c:otherwise>
                     </c:choose>
+                  </c:if>
                 </td>
                 <td class="alignCenter">
+                  <c:if test="${pt.product.nightDose > 0}">
                     <c:out value="${pt.product.nightDose}   "/>
                 	<c:choose>
                      <c:when test="${day.productTaken[status.index].night}">
@@ -72,6 +77,7 @@
                       <input id="_${pt.id}_id_night" name="_${pt.id}_night_name" value="${day.productTaken[status.index].night}" type="checkbox"/>
                      </c:otherwise>
                     </c:choose>
+                  </c:if>
                 </td>
               </tr>
             </c:forEach>

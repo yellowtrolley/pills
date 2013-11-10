@@ -37,7 +37,7 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 	public Converter<Day, String> getDayToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<org.pablog.pills.domain.Day, java.lang.String>() {
             public String convert(Day day) {
-                return new StringBuilder().append(day.getTheDay()).toString();
+                return new StringBuilder().append(day.getTheDate()).toString();
             }
         };
     }

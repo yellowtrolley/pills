@@ -15,14 +15,13 @@ public class UserController {
 	@Autowired UserRepository userRepository;
 	@Autowired StandardPasswordEncoder pwdEncoder;
 	
-	@RequestMapping(value = "/new/{username}/{password}", produces = "text/html")
-	public String create(@PathVariable("username") String username, @PathVariable("password") String password, Model uiModel) {
+	@RequestMapping(value = "/new/{username}/{password}/{role}", produces = "text/html")
+	public String create(@PathVariable("username") String username, @PathVariable("password") String password, @PathVariable("role") String role, Model uiModel) {
 		User user = new User();
 		user.setPassword(pwdEncoder.encode(password));
 		user.setUsername(username);
+		user.setRole(role);
 		userRepository.save(user);
-		System.out.println("Username: " + user.getUsername());
-		System.out.println("Password raw: " + user.getPassword());
-        return "/";
+        return "/days/current";
     }
 }
