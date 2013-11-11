@@ -24,10 +24,11 @@ import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@Configurable
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath*:/META-INF/spring/applicationContext*.xml")
+//@Configurable
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(locations = "classpath*:/META-INF/spring/applicationContext*.xml")
 public class UserTest {
+	/*
 	@Autowired UserRepository userRepository;
 	@Autowired DayRepository dayRepository;
 	@Autowired ProductRepository productRepository;
@@ -94,4 +95,5 @@ public class UserTest {
 			dayRepository.save(day);
 		}
 	}
+	*/
 }
