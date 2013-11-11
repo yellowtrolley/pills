@@ -11,6 +11,29 @@ body {
 	text-align: center;
 }
 
+.clear {
+    clear: both;
+}
+
+input[type=checkbox]
+{
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(2); /* IE */
+  -moz-transform: scale(2); /* FF */
+  -webkit-transform: scale(2); /* Safari and Chrome */
+  -o-transform: scale(2); /* Opera */
+  padding: 5px;
+}
+
+.submit {
+    margin: 25px 0;
+}
+
+
+#rememeberMe {
+    margin: 10px 0 0 12px;
+}
+
 #header {
 	margin-bottom: 1em;
 }
@@ -383,4 +406,14 @@ fieldset th {
 
 .alignCenter {
 	text-align:center;
+}
+
+#loading {
+	position:absolute;
+    width:32px; /*image width */
+    height:32px; /*image height */
+    left:50%; 
+    top:50%;
+    margin-left:-16px; /*image width/2 */
+    margin-top:-16px; /*image height/2 */
 }

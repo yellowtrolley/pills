@@ -39,8 +39,8 @@ public class DayController {
 	SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 	
 	@RequestMapping(value = "/current", produces = "text/html")
-    public String current(Model uiModel) {
-        uiModel.addAttribute("day", dayRepository.findByTheDateAndUser(formatter.format(new Date()), getLoggedInUser()));
+    public String current(@ActiveUser User activeUser, Model uiModel) {
+        uiModel.addAttribute("day", dayRepository.findByTheDateAndUser(formatter.format(new Date()), activeUser));
         
         return "days/show";
     }
@@ -54,15 +54,15 @@ public class DayController {
     }
 
 	@RequestMapping(produces = "text/html")
-    public String list(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+    public String list(@ActiveUser User activeUser, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("days", dayRepository.findByUser(getLoggedInUser(), new PageRequest(firstResult / sizeNo, sizeNo)));
+            uiModel.addAttribute("days", dayRepository.findByUser(activeUser, new PageRequest(firstResult / sizeNo, sizeNo)));
             float nrOfPages = (float) dayRepository.count() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("days", dayRepository.findByUser(getLoggedInUser()));
+            uiModel.addAttribute("days", dayRepository.findByUser(activeUser));
         }
         return "days/list";
     }
@@ -108,8 +108,4 @@ public class DayController {
         } catch (UnsupportedEncodingException uee) {}
         return pathSegment;
     }
-
-	private User getLoggedInUser() {
-		return userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-	}
 }
