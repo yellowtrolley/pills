@@ -417,3 +417,7 @@ fieldset th {
     margin-left:-16px; /*image width/2 */
     margin-top:-16px; /*image height/2 */
 }
+
+#header > div {
+    float: right;
+}

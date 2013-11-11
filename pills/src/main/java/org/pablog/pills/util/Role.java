@@ -1,7 +1,7 @@
 package org.pablog.pills.util;
 
 public enum Role {
-	AMMIN("AMMIN"), USER("USER");
+	ROLE_AMMIN("ROLE_AMMIN"), ROLE_USER("ROLE_USER");
 	
 	Role(String role){}
 	

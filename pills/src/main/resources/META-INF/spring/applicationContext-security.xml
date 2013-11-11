@@ -14,6 +14,7 @@
         <intercept-url pattern="/member/**" access="isAuthenticated()" />
         <intercept-url pattern="/resources/**" access="permitAll" />
         <intercept-url pattern="/login/**" access="permitAll" />
+        <intercept-url pattern="/users/**" access="permitAll" />
         <intercept-url pattern="/**" access="isAuthenticated()" />
     </http>
     

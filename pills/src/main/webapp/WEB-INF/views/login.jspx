@@ -6,6 +6,9 @@
   <c:if test="${not empty param.login_error}">
   	<script>loginerrors = true;</script>
   </c:if>
+  <c:if test="${not empty register_error}">
+  	<script>loginerrors = true;</script>
+  </c:if>
   <script language="JavaScript" type="text/javascript"><![CDATA[
  	function validaUsername(usernameField) {
 		if(usernameField.value.length != 0) {
@@ -27,9 +30,9 @@
 			});
 		}
 	}
-		
+
 	$(function() {
-   	 	$('form').submit(function(event){
+   	 	$('form.registerForm').submit(function(event){
 			var usernameField = dijit.byId("_username_id");
 			validaUsername(usernameField);
 			if(usernameField.get("state") == "Error"){
@@ -37,8 +40,8 @@
 					return false;
 			}
 			
-			var password = $("#_password_id").text();
-			var confirmPassword = $("#_confirmPassword_id").text();
+			var password = dijit.byId("#_password_id").attr('value');
+			var confirmPassword = dijit.byId("#_confirmPassword_id").attr('value');
 			if(confirmPassword != confirmPassword){
 				$('#errors').html('${passwordConfirmErrorMsg}');
 				event.preventDefault();
@@ -111,16 +114,17 @@
         <input id="reset" type="reset" value="${fn:escapeXml(reset_label)}" />
       </div>
     </form>
-    
     <div class="clear"><jsp:text/></div>
+    <br />
+    <br />
     <spring:message code="label_org_pablog_pills_domain_user_register" var="register_label" htmlEscape="false" />
-    <pform:create id="fc_org_pablog_pills_domain_User" label="${register_label}" openPane="false" modelAttribute="user" path="/users" render="${empty dependencies}" z="">
+    <pform:create cssClass="registerForm" id="fc_org_pablog_pills_domain_User" label="${register_label}" openPane="${not empty register_error}" modelAttribute="user" path="/users" render="${empty dependencies}" z="">
     	<div class="errors"><jsp:text/></div>
-        <field:input field="username" required="true" id="c_org_pablog_pills_domain_User_username" z=""/>
-        <field:input field="password" required="true" id="c_org_pablog_pills_domain_User_password" type="password" z=""/>
-        <field:input render="false" field="confirmPassword" id="c_org_pablog_pills_domain_User_confirmPassword" type="password" disableFormBinding="true" required="true" z=""/>
+        <field:input field="username" id="c_org_pablog_pills_domain_User_username" z=""/>
+        <field:input field="password" id="c_org_pablog_pills_domain_User_password" type="password" z=""/>
+        <field:input field="confirmPassword" id="c_org_pablog_pills_domain_User_confirmPassword" type="password" disableFormBinding="true" z=""/>
         <field:input field="name" id="c_org_pablog_pills_domain_User_name" z=""/>
-        <field:input field="email" required="true" id="c_org_pablog_pills_domain_User_email" z=""/>
+        <field:input field="email" id="c_org_pablog_pills_domain_User_email" z=""/>
     </pform:create>
 </div>
 

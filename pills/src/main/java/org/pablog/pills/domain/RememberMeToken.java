@@ -2,13 +2,15 @@ package org.pablog.pills.domain;
 
 import java.util.Date;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
 
 @Document(collection = "RememberMeToken")
 public class RememberMeToken {
- 
+	private ObjectId id;
+	
     private String username;
      
     @Indexed
@@ -60,6 +62,14 @@ public class RememberMeToken {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public ObjectId getId() {
+		return id;
+	}
+
+	public void setId(ObjectId id) {
+		this.id = id;
 	}
  
 }
