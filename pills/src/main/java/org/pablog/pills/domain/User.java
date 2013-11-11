@@ -17,6 +17,7 @@ public class User {
 	private String password;
 	private String name;
 	private String role;
+	private String email;
 	
 	@DBRef
 	@CascadeSave
@@ -51,6 +52,11 @@ public class User {
 	public List<Product> getProducts() {
 		return products;
 	}
+	/*public List<Product> getProducts(Pageable pageable) {
+		int fromIndex = pageable.getPageNumber() * pageable.getPageSize();
+	    int toIndex = fromIndex + pageable.getPageSize() - 1;
+		return products.subList(fromIndex, toIndex);
+	}*/
 	public void setProducts(List<Product> products) {
 		this.products = products;
 	}
@@ -59,5 +65,11 @@ public class User {
 	}
 	public void setRole(String role) {
 		this.role = role;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

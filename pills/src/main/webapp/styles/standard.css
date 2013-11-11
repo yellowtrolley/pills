@@ -11,6 +11,10 @@ body {
 	text-align: center;
 }
 
+.clear {
+    clear: both;
+}
+
 input[type=checkbox]
 {
   /* Double-sized Checkboxes */
@@ -22,7 +26,7 @@ input[type=checkbox]
 }
 
 .submit {
-    margin: 25px 0 0;
+    margin: 25px 0;
 }
 
 

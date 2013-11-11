@@ -1,8 +1,62 @@
-<div xmlns:spring="http://www.springframework.org/tags" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+<div xmlns:spring="http://www.springframework.org/tags" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:pform="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
   <jsp:directive.page contentType="text/html;charset=UTF-8" />
   <jsp:output omit-xml-declaration="yes" />
-  <spring:message code="security_login_title" var="title" htmlEscape="false" />
-  <util:panel id="title" title="${title}">
+  <spring:message code="error_user_passwordConfirm" var="passwordConfirmErrorMsg"/>
+  <script>var loginerrors = false;</script>
+  <c:if test="${not empty param.login_error}">
+  	<script>loginerrors = true;</script>
+  </c:if>
+  <script language="JavaScript" type="text/javascript"><![CDATA[
+ 	function validaUsername(usernameField) {
+		if(usernameField.value.length != 0) {
+			dojo.xhrGet({
+				url: contextPath+'/users/validUsername',
+				handleAs: "json",
+				content: {username : usernameField.value},
+				load: function(data) {
+					var result = data.result;
+					if(result.length != 0) {
+						usernameField.set( "state", "Error" );
+						usernameField.displayMessage(result);
+					} 
+				},
+				error: function(e) {
+					console.log("Ajax call failed", e);
+					return e;
+				}
+			});
+		}
+	}
+		
+	$(function() {
+   	 	$('form').submit(function(event){
+			var usernameField = dijit.byId("_username_id");
+			validaUsername(usernameField);
+			if(usernameField.get("state") == "Error"){
+				event.preventDefault();
+					return false;
+			}
+			
+			var password = $("#_password_id").text();
+			var confirmPassword = $("#_confirmPassword_id").text();
+			if(confirmPassword != confirmPassword){
+				$('#errors').html('${passwordConfirmErrorMsg}');
+				event.preventDefault();
+					return false;
+			}
+		});
+	});
+		
+  	dojo.ready(function() {
+		dojo.connect(dijit.byId("_username_id"), "onBlur", function() {
+			validaUsername(dijit.byId("_username_id"));
+		});
+	});
+		
+  ]]></script>
+  	<div id="welcom_msg">
+	  <spring:message code="welcome_text" />
+  	</div>
     <c:if test="${not empty param.login_error}">
       <div class="errors">
         <p>
@@ -57,6 +111,16 @@
         <input id="reset" type="reset" value="${fn:escapeXml(reset_label)}" />
       </div>
     </form>
-  </util:panel>
+    
+    <div class="clear"><jsp:text/></div>
+    <spring:message code="label_org_pablog_pills_domain_user_register" var="register_label" htmlEscape="false" />
+    <pform:create id="fc_org_pablog_pills_domain_User" label="${register_label}" openPane="false" modelAttribute="user" path="/users" render="${empty dependencies}" z="">
+    	<div class="errors"><jsp:text/></div>
+        <field:input field="username" required="true" id="c_org_pablog_pills_domain_User_username" z=""/>
+        <field:input field="password" required="true" id="c_org_pablog_pills_domain_User_password" type="password" z=""/>
+        <field:input render="false" field="confirmPassword" id="c_org_pablog_pills_domain_User_confirmPassword" type="password" disableFormBinding="true" required="true" z=""/>
+        <field:input field="name" id="c_org_pablog_pills_domain_User_name" z=""/>
+        <field:input field="email" required="true" id="c_org_pablog_pills_domain_User_email" z=""/>
+    </pform:create>
 </div>
 
