@@ -11,6 +11,25 @@ body {
 	text-align: center;
 }
 
+input[type=checkbox]
+{
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(2); /* IE */
+  -moz-transform: scale(2); /* FF */
+  -webkit-transform: scale(2); /* Safari and Chrome */
+  -o-transform: scale(2); /* Opera */
+  padding: 5px;
+}
+
+.submit {
+    margin: 25px 0 0;
+}
+
+
+#rememeberMe {
+    margin: 10px 0 0 12px;
+}
+
 #header {
 	margin-bottom: 1em;
 }
