@@ -40,7 +40,7 @@ public class DayController {
 	
 	@RequestMapping(value = "/current", produces = "text/html")
     public String current(@ActiveUser User activeUser, Model uiModel) {
-        uiModel.addAttribute("day", dayRepository.findByTheDateAndUser(formatter.format(new Date()), activeUser));
+        uiModel.addAttribute("day", dayRepository.findByTheDateAndUser(formatter.format(new Date()), userRepository.findByUsername(activeUser.getUsername())));
         
         return "days/show";
     }
