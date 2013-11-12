@@ -14,9 +14,9 @@ import org.pablog.pills.repositories.DayRepository;
 import org.pablog.pills.repositories.ProductRepository;
 import org.pablog.pills.repositories.ProductTakenRepository;
 import org.pablog.pills.repositories.UserRepository;
+import org.pablog.pills.service.DayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,12 +35,18 @@ public class DayController {
 	@Autowired DayRepository dayRepository;
 	@Autowired ProductTakenRepository productTakenRepository;
 	@Autowired UserRepository userRepository;
+	@Autowired DayService dayService;
 	
 	SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 	
 	@RequestMapping(value = "/current", produces = "text/html")
     public String current(@ActiveUser User activeUser, Model uiModel) {
-        uiModel.addAttribute("day", dayRepository.findByTheDateAndUser(formatter.format(new Date()), userRepository.findByUsername(activeUser.getUsername())));
+		Day day = dayService.findByTheDateAndUser(new Date(), activeUser);
+		
+		if(day == null) {
+			day = dayService.createDay(activeUser);
+		}
+        uiModel.addAttribute("day", day);
         
         return "days/show";
     }
