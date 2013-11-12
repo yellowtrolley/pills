@@ -17,6 +17,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -39,6 +41,8 @@ public class UserController {
 	@Autowired UserRepository userRepository;
 	@Autowired StandardPasswordEncoder pwdEncoder;
 	@Autowired MessageSource messageSource;
+	@Autowired MailSender mailSender;
+	@Autowired SimpleMailMessage templateMessage;
 	/*
 	@RequestMapping(value = "/new/{username}/{password}/{role}", produces = "text/html")
 	public String create(@PathVariable("username") String username, @PathVariable("password") String password, @PathVariable("role") String role, Model uiModel) {
@@ -96,6 +100,9 @@ public class UserController {
 		else if(!user.getPassword().equals(confirmPassword)){
     		bindingResult.addError(new FieldError("user", "password", messageSource.getMessage("error_user_passwordConfirm", null, httpServletRequest.getLocale())));
     	}
+		if(StringUtils.isBlank(user.getEmail())){
+    		bindingResult.addError(new FieldError("user", "email", messageSource.getMessage("field_required", null, httpServletRequest.getLocale())));
+    	}
 		if (bindingResult.hasErrors()) {
             populateEditForm(uiModel, user);
             uiModel.addAttribute("register_error", bindingResult.getAllErrors());
@@ -108,6 +115,10 @@ public class UserController {
         user.setPassword(pwdEncoder.encode(pwd));
         user.setProducts(new ArrayList<Product>());
         userRepository.save(user);
+        
+        templateMessage.setSubject(messageSource.getMessage("mail_new_user_subject", null, httpServletRequest.getLocale()));
+        templateMessage.setText(messageSource.getMessage("mail_new_user_text", new String[]{user.getUsername(),user.getPassword()}, httpServletRequest.getLocale()));
+        mailSender.send(templateMessage);
         
         Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, AuthorityUtils.createAuthorityList(Role.ROLE_USER.toString()));
     	SecurityContextHolder.getContext().setAuthentication(authentication);

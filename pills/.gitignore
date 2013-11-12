@@ -1,4 +1,5 @@
 /target
 /src/main/resources/META-INF/spring/database.properties
+/src/main/resources/META-INF/spring/email.properties
 /log.roo
 /pills.roo
