@@ -36,6 +36,16 @@ public class ProductTaken {
      */
     private boolean night;
 
+	public ProductTaken() {}
+	
+	public ProductTaken(Product product, boolean morning, boolean midday, boolean night) {
+		this.product = product;
+		this.morning = morning;
+		this.midday = midday;
+		this.night = night;
+	}
+
+	
 	public String toJson() {
         return new JSONSerializer().exclude("*.class").serialize(this);
     }
@@ -55,15 +65,6 @@ public class ProductTaken {
 	public static String toJsonArray(Collection<ProductTaken> collection, String[] fields) {
         return new JSONSerializer().include(fields).exclude("*.class").serialize(collection);
     }
-
-	public ProductTaken(Product product, boolean morning, boolean midday,
-			boolean night) {
-		super();
-		this.product = product;
-		this.morning = morning;
-		this.midday = midday;
-		this.night = night;
-	}
 
 	public static Collection<ProductTaken> fromJsonArrayToProductTakens(String json) {
         return new JSONDeserializer<List<ProductTaken>>().use(null, ArrayList.class).use("values", ProductTaken.class).deserialize(json);

@@ -10,7 +10,7 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.pablog.pills.domain.Product;
 import org.pablog.pills.domain.User;
-import org.pablog.pills.repositories.UserRepository;
+import org.pablog.pills.service.UserService;
 import org.pablog.pills.util.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -38,7 +38,7 @@ import flexjson.JSONSerializer;
 @RequestMapping("/users")
 @Controller
 public class UserController {
-	@Autowired UserRepository userRepository;
+	@Autowired UserService userService;
 	@Autowired StandardPasswordEncoder pwdEncoder;
 	@Autowired MessageSource messageSource;
 	@Autowired MailSender mailSender;
@@ -50,7 +50,7 @@ public class UserController {
 		user.setPassword(pwdEncoder.encode(password));
 		user.setUsername(username);
 		user.setRole(role);
-		userRepository.save(user);
+		userService.save(user);
         return "redirect:/days/current";
     }
 	*/
@@ -60,7 +60,7 @@ public class UserController {
 		User user = new User();
 		user.setUsername(username);
 		
-		if(userRepository.findByUsername(user.getUsername()) != null){
+		if(userService.findByUsername(user.getUsername()) != null){
     		bindingResult.addError(new FieldError("user", "username", messageSource.getMessage("error_user_exists", null, httpServletRequest.getLocale())));
     	}
 		
@@ -79,7 +79,7 @@ public class UserController {
         user.setRole(Role.USER.toString());
 //        String pwd = user.getPassword();
         user.setPassword(pwdEncoder.encode(password));
-        userRepository.save(user);
+        userService.save(user);
         
         return "redirect:/days/current";
     }
@@ -91,7 +91,7 @@ public class UserController {
 		if(StringUtils.isBlank(user.getUsername())){
     		bindingResult.addError(new FieldError("user", "username", messageSource.getMessage("field_required", null, httpServletRequest.getLocale())));
     	}
-		else if(userRepository.findByUsername(user.getUsername()) != null){
+		else if(userService.findByUsername(user.getUsername()) != null){
     		bindingResult.addError(new FieldError("user", "username", messageSource.getMessage("error_user_exists", null, httpServletRequest.getLocale())));
     	}
 		if(StringUtils.isBlank(user.getPassword())){
@@ -114,7 +114,7 @@ public class UserController {
         String pwd = user.getPassword();
         user.setPassword(pwdEncoder.encode(pwd));
         user.setProducts(new ArrayList<Product>());
-        userRepository.save(user);
+        userService.save(user);
         
         templateMessage.setSubject(messageSource.getMessage("mail_new_user_subject", null, httpServletRequest.getLocale()));
         templateMessage.setText(messageSource.getMessage("mail_new_user_text", new String[]{user.getUsername(),user.getPassword()}, httpServletRequest.getLocale()));
@@ -140,7 +140,7 @@ public class UserController {
         
         Map<String,String> result = new HashMap<String, String>();
         
-        if(userRepository.findByUsername(username) != null){
+        if(userService.findByUsername(username) != null){
         	result.put("result", messageSource.getMessage("error_user_exists", null, httpServletRequest.getLocale()));
         } else {
         	result.put("result", "");

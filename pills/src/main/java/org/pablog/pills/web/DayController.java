@@ -10,10 +10,6 @@ import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
 import org.pablog.pills.domain.Day;
 import org.pablog.pills.domain.User;
-import org.pablog.pills.repositories.DayRepository;
-import org.pablog.pills.repositories.ProductRepository;
-import org.pablog.pills.repositories.ProductTakenRepository;
-import org.pablog.pills.repositories.UserRepository;
 import org.pablog.pills.service.DayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -31,10 +27,6 @@ import org.springframework.web.util.WebUtils;
 @Controller
 public class DayController {
 	Logger logger = Logger.getLogger(this.getClass());
-	@Autowired ProductRepository productRepository;
-	@Autowired DayRepository dayRepository;
-	@Autowired ProductTakenRepository productTakenRepository;
-	@Autowired UserRepository userRepository;
 	@Autowired DayService dayService;
 	
 	SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -54,7 +46,7 @@ public class DayController {
 
 	@RequestMapping(value = "/{id}", produces = "text/html")
     public String show(@PathVariable("id") ObjectId id, Model uiModel) {
-        uiModel.addAttribute("day", dayRepository.findById(id));
+        uiModel.addAttribute("day", dayService.findById(id));
         uiModel.addAttribute("itemId", id);
         return "days/show";
     }
@@ -64,11 +56,11 @@ public class DayController {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("days", dayRepository.findByUser(activeUser, new PageRequest(firstResult / sizeNo, sizeNo)));
-            float nrOfPages = (float) dayRepository.count() / sizeNo;
+            uiModel.addAttribute("days", dayService.findByUser(activeUser, new PageRequest(firstResult / sizeNo, sizeNo)));
+            float nrOfPages = (float) dayService.findByUser(activeUser).size() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("days", dayRepository.findByUser(activeUser));
+            uiModel.addAttribute("days", dayService.findByUser(activeUser));
         }
         return "days/list";
     }
@@ -80,20 +72,20 @@ public class DayController {
             return "days/update";
         }
         uiModel.asMap().clear();
-        dayRepository.save(day);
+        dayService.save(day);
         return "redirect:/days/" + encodeUrlPathSegment(day.getId().toString(), httpServletRequest);
     }
 
 	@RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String updateForm(@PathVariable("id") ObjectId id, Model uiModel) {
-        populateEditForm(uiModel, dayRepository.findById(id));
+        populateEditForm(uiModel, dayService.findById(id));
         return "days/update";
     }
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String delete(@PathVariable("id") ObjectId id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Day day = dayRepository.findById(id);
-        dayRepository.delete(day);
+        Day day = dayService.findById(id);
+        dayService.delete(day);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());

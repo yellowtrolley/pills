@@ -3,8 +3,10 @@ package org.pablog.pills.service;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.bson.types.ObjectId;
 import org.pablog.pills.domain.Day;
 import org.pablog.pills.domain.Product;
 import org.pablog.pills.domain.ProductTaken;
@@ -12,6 +14,7 @@ import org.pablog.pills.domain.User;
 import org.pablog.pills.repositories.DayRepository;
 import org.pablog.pills.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,9 +24,6 @@ public class DayServiceImpl implements DayService {
 	@Autowired UserRepository userRepository;
 	SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 	
-	/* (non-Javadoc)
-	 * @see org.pablog.pills.service.DayService#createDay(org.pablog.pills.domain.User)
-	 */
 	@Override
 	public Day createDay(User user) {
 		logger.info("Start creating new treatment day time: " + new Date());
@@ -44,12 +44,39 @@ public class DayServiceImpl implements DayService {
 	}
 
 	@Override
-	public Day findByTheDateAndUser(Date date, User user) {
-		return dayRepository.findByTheDateAndUser(formatter.format(date), userRepository.findByUsername(user.getUsername()));
+	public void addProductToDay(Day day, Product product, User user) {
+		day.getProductTaken().add(new ProductTaken(product, false, false, false));
+		dayRepository.save(day);
+	}
+	
+
+	@Override
+	public Day save(Day day) {
+		return dayRepository.save(day);
 	}
 
 	@Override
-	public void addProductToDay(Day day, Product product) {
-		day.getProductTaken().add(new ProductTaken(product, false, false, false));
+	public void delete(Day day) {
+		dayRepository.delete(day);
+	}
+
+	@Override
+	public Day findByTheDateAndUser(Date date, User user) {
+		return dayRepository.findByTheDateAndUser(formatter.format(date), userRepository.findByUsername(user.getUsername()));
+	}
+	
+	@Override
+	public Day findById(ObjectId id) {
+		return dayRepository.findById(id);
+	}
+	
+	@Override
+	public List<Day> findByUser(User user) {
+		return dayRepository.findByUser(user);
+	}
+	
+	@Override
+	public List<Day> findByUser(User user, Pageable pageable) {
+		return dayRepository.findByUser(user, pageable);
 	}
 }

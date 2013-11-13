@@ -1,15 +1,17 @@
 package org.pablog.pills.web;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.bson.types.ObjectId;
+import org.pablog.pills.domain.Day;
 import org.pablog.pills.domain.Product;
 import org.pablog.pills.domain.User;
-import org.pablog.pills.repositories.ProductRepository;
-import org.pablog.pills.repositories.UserRepository;
+import org.pablog.pills.service.DayService;
+import org.pablog.pills.service.ProductService;
+import org.pablog.pills.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,9 +27,10 @@ import org.springframework.web.util.WebUtils;
 @Controller
 public class ProductController {
 
-	@Autowired ProductRepository productRepository;
-	@Autowired UserRepository userRepository;
-
+	@Autowired ProductService productService;
+	@Autowired UserService userService;
+	@Autowired DayService dayService;
+	
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String create(@ActiveUser User activeUser, @Valid Product product, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
@@ -35,8 +38,15 @@ public class ProductController {
             return "products/create";
         }
         uiModel.asMap().clear();
+        
+        // Add product to user
         activeUser.getProducts().add(product);
-        userRepository.save(activeUser);
+        userService.save(activeUser);
+        
+        // Add product to current day
+        Day today = dayService.findByTheDateAndUser(new Date(), activeUser);
+        dayService.addProductToDay(today, product, activeUser);
+        
         return "redirect:/products/" + encodeUrlPathSegment(product.getId().toString(), httpServletRequest);
     }
 
@@ -48,7 +58,7 @@ public class ProductController {
 
 	@RequestMapping(value = "/{id}", produces = "text/html")
     public String show(@PathVariable("id") ObjectId id, Model uiModel) {
-        uiModel.addAttribute("product", productRepository.findById(id));
+        uiModel.addAttribute("product", productService.findById(id));
         uiModel.addAttribute("itemId", id);
         return "products/show";
     }
@@ -68,29 +78,31 @@ public class ProductController {
     }
 
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-    public String update(@Valid Product product, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+    public String update(@ActiveUser User activeUser, @Valid Product product, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
             populateEditForm(uiModel, product);
             return "products/update";
         }
         uiModel.asMap().clear();
-        productRepository.save(product);
+        
+		productService.save(product);
+        
         return "redirect:/products/" + encodeUrlPathSegment(product.getId().toString(), httpServletRequest);
     }
 
 	@RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String updateForm(@PathVariable("id") ObjectId id, Model uiModel) {
-        populateEditForm(uiModel, productRepository.findById(id));
+        populateEditForm(uiModel, productService.findById(id));
         return "products/update";
     }
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String delete(@ActiveUser User activeUser, @PathVariable("id") ObjectId id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-		Product product = productRepository.findById(id);
+		Product product = productService.findById(id);
 		if(activeUser.getProducts().contains(product)) {
 			activeUser.getProducts().remove(product);
-			userRepository.save(activeUser);
-			productRepository.delete(product);
+			userService.save(activeUser);
+			productService.delete(product);
 		}
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());

@@ -1,25 +1,39 @@
 package org.pablog.pills.domain;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
-import org.bson.types.ObjectId;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.pablog.pills.repositories.ProductRepository;
+import org.pablog.pills.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(locations = "classpath*:/META-INF/spring/applicationContext*.xml")
 //@Configurable
 public class ProductIntegrationTest {
-
+	@Autowired ProductService productService;
+	/*
+	@Test
+    public void testUpdate() {
+        Assert.assertNotNull("Data on demand for 'Product' failed to initialize correctly", dod.getRandomProduct());
+        Product obj = dod.getNewTransientProduct(Integer.MAX_VALUE);
+        Assert.assertNotNull("Data on demand for 'Product' failed to provide a new transient entity", obj);
+        Assert.assertNull("Expected 'Product' identifier to be null", obj.getId());
+        try {
+            productRepository.save(obj);
+        } catch (final ConstraintViolationException e) {
+            final StringBuilder msg = new StringBuilder();
+            for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {
+                final ConstraintViolation<?> cv = iter.next();
+                msg.append("[").append(cv.getRootBean().getClass().getName()).append(".").append(cv.getPropertyPath()).append(": ").append(cv.getMessage()).append(" (invalid value = ").append(cv.getInvalidValue()).append(")").append("]");
+            }
+            throw new IllegalStateException(msg.toString(), e);
+        }
+        Assert.assertNotNull("Expected 'Product' identifier to no longer be null", obj.getId());
+    }
+	*/
 	/*
     @Test
     public void testMarkerMethod() {

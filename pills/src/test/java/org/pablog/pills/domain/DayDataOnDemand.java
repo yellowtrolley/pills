@@ -1,15 +1,11 @@
 package org.pablog.pills.domain;
-import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-
-import org.bson.types.ObjectId;
-import org.pablog.pills.repositories.DayRepository;
+import org.pablog.pills.repositories.ProductTakenRepository;
+import org.pablog.pills.service.DayService;
+import org.pablog.pills.service.ProductService;
+import org.pablog.pills.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
@@ -17,75 +13,54 @@ import org.springframework.stereotype.Component;
 @Component
 @Configurable
 public class DayDataOnDemand {
-	/*
-	private Random rnd = new SecureRandom();
+//	private Random rnd = new SecureRandom();
 
-	private List<Day> data;
+	private Day day;
+	private User user;
+	private List<Product> products;
 
-	@Autowired
-    DayRepository dayRepository;
-
-	public Day getNewTransientDay(int index) {
-        Day obj = new Day();
-        setTheDate(obj, index);
-        return obj;
-    }
-
-	public void setTheDate(Day obj, int index) {
-        String theDate = "theDate_" + index;
-        obj.setTheDate(theDate);
-    }
-
-	public Day getSpecificDay(int index) {
-        init();
-        if (index < 0) {
-            index = 0;
-        }
-        if (index > (data.size() - 1)) {
-            index = data.size() - 1;
-        }
-        Day obj = data.get(index);
-        ObjectId id = obj.getId();
-        return dayRepository.findById(id);
-    }
-
-	public Day getRandomDay() {
-        init();
-        Day obj = data.get(rnd.nextInt(data.size()));
-        ObjectId id = obj.getId();
-        return dayRepository.findById(id);
-    }
-
-	public boolean modifyDay(Day obj) {
-        return false;
-    }
-
+	@Autowired DayService dayService;
+	@Autowired UserService userService;
+	@Autowired ProductService productService;
+	@Autowired ProductTakenRepository productTakenRepo;
+	
+	public User getTestUser() {
+		return user;
+	}
+	
+	public Day getTestDay() {
+		return day;
+	}
+	
 	public void init() {
-        int from = 0;
-        int to = 10;
-        data = dayRepository.findAll(new org.springframework.data.domain.PageRequest(from / to, to)).getContent();
-        if (data == null) {
-            throw new IllegalStateException("Find entries implementation for 'Day' illegally returned null");
-        }
-        if (!data.isEmpty()) {
-            return;
-        }
-        
-        data = new ArrayList<Day>();
-        for (int i = 0; i < 10; i++) {
-            Day obj = getNewTransientDay(i);
-            try {
-                dayRepository.save(obj);
-            } catch (final ConstraintViolationException e) {
-                final StringBuilder msg = new StringBuilder();
-                for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {
-                    final ConstraintViolation<?> cv = iter.next();
-                    msg.append("[").append(cv.getRootBean().getClass().getName()).append(".").append(cv.getPropertyPath()).append(": ").append(cv.getMessage()).append(" (invalid value = ").append(cv.getInvalidValue()).append(")").append("]");
-                }
-                throw new IllegalStateException(msg.toString(), e);
-            }
-            data.add(obj);
-        }
+		User user = new User();
+		user.setName("testUser");
+		user.setPassword("testPassword");
+		user = userService.save(user);
+		
+		products = new ArrayList<>();
+		products.add(new Product("Domperidona 10 mg",1,1,1));
+		products.add(new Product("Plenur 400 mg",0.5,0,1));
+		products.add(new Product("Labileno 100 mg",1,0,1));
+		products.add(new Product("Lansoprazon 30 mg",1, 0,1));
+		products.add(new Product("Rivotril 0,5 mg",1,1,2));
+		products.add(new Product("Zyprexa 10 mg",1,0,1));
+		products.add(new Product("Noctamid 1 mg",0,0,1));
+		products.add(new Product("Mysoline  250 mg",0,0,1));
+		user.setProducts(products);
+		
+		day = dayService.createDay(user);
     }
-    */
+	
+	public void destroy() {
+		for(ProductTaken pt : day.getProductTaken())
+			productTakenRepo.delete(pt);
+		
+		dayService.delete(day);
+		
+		for(Product p : products)
+			productService.delete(p);
+		
+		userService.delete(user);
+	}
 }

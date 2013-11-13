@@ -20,14 +20,25 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 //@RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(locations = "classpath*:/META-INF/spring/applicationContext*.xml")
 public class DayIntegrationTest {
+	@Autowired DayDataOnDemand dod;
+	
 	/*
+	@Test
+    public void testUserCreation() {
+		User user = dod.getTestUser();
+		Assert.assertNotNull("Expected 'User' failed to initialize correctly", user);
+		Assert.assertNotNull("Expected 'User' identifier to not be null", user.getId());
+}
+	
     @Test
-    public void testMarkerMethod() {
+    public void testDayCreation() {
+    	Day day = dod.getTestDay();
+		Assert.assertNotNull("Data on demand for 'Day' failed to initialize correctly", day);
+		Assert.assertNotNull("Expected 'Day' identifier to not be null", day.getId());
     }
-
-	@Autowired
-    DayDataOnDemand dod;
-
+*/    
+    
+    /*
 	@Autowired DayRepository dayRepository;
 	@Autowired UserRepository userRepository;
 
