@@ -35,8 +35,7 @@ public class DayServiceImpl implements DayService {
 		
 		for(Product p : user.getProducts()) {
 			logger.info("		Adding product: " + p.getName() + " for user: " + user.getUsername());
-			ProductTaken pt = new ProductTaken();
-			pt.setProduct(p);
+			ProductTaken pt = new ProductTaken(p, false, false, false);
 			day.getProductTaken().add(pt);
 			logger.info("		Product: " + pt.getProduct().getName() + "added.");
 		}
@@ -49,4 +48,8 @@ public class DayServiceImpl implements DayService {
 		return dayRepository.findByTheDateAndUser(formatter.format(date), userRepository.findByUsername(user.getUsername()));
 	}
 
+	@Override
+	public void addProductToDay(Day day, Product product) {
+		day.getProductTaken().add(new ProductTaken(product, false, false, false));
+	}
 }
