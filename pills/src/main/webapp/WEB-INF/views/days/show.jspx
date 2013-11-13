@@ -23,63 +23,70 @@
 	  		});
 	  	});
     </script>
-    <field:display render="false" field="theDate" id="s_org_pablog_pills_domain_Day_theDate" object="${day}" z="ejPp0H1/MJITVq6isR4vDfN8R2E="/>
-    <table>
-        <thead>
-            <tr>
-                <th/>
-                <th><spring:message code="label_org_pablog_pills_domain_morning" /></th>
-                <th><spring:message code="label_org_pablog_pills_domain_midday" /></th>
-                <th><spring:message code="label_org_pablog_pills_domain_night" /></th>
-            </tr>
-        </thead>
-        <tbody>
-            <c:forEach items="${day.productTaken}" var="pt" varStatus="status">
-              <tr>
-                <td>
-                    <c:out value="${pt.product.name}"/>
-                </td>
-                <td class="alignCenter">
-                  <c:if test="${pt.product.morningDose > 0}">
-                    <c:out value="${pt.product.morningDose}   "/>
-                    <c:choose>
-                     <c:when test="${day.productTaken[status.index].morning}">
-                      <input id="_${pt.id}_id_morning" name="_${pt.id}_morning_name" value="${day.productTaken[status.index].morning}" type="checkbox" checked="checked"/>
-                     </c:when>
-                     <c:otherwise>
-                      <input id="_${pt.id}_id_morning" name="_${pt.id}_morning_name" value="${day.productTaken[status.index].morning}" type="checkbox" />
-                     </c:otherwise>
-                    </c:choose>
-                  </c:if>
-                </td>
-                <td class="alignCenter">
-                  <c:if test="${pt.product.middayDose > 0}">
-                    <c:out value="${pt.product.middayDose}   "/>
-                    <c:choose>
-                     <c:when test="${day.productTaken[status.index].midday}">
-                      <input id="_${pt.id}_id_midday" name="_${pt.id}_midday_name" value="${day.productTaken[status.index].midday}" type="checkbox" checked="checked"/>
-                     </c:when>
-                     <c:otherwise>
-                      <input id="_${pt.id}_id_midday" name="_${pt.id}_midday_name" value="${day.productTaken[status.index].midday}" type="checkbox"/>
-                     </c:otherwise>
-                    </c:choose>
-                  </c:if>
-                </td>
-                <td class="alignCenter">
-                  <c:if test="${pt.product.nightDose > 0}">
-                    <c:out value="${pt.product.nightDose}   "/>
-                	<c:choose>
-                     <c:when test="${day.productTaken[status.index].night}">
-                      <input id="_${pt.id}_id_night" name="_${pt.id}_night_name" value="${day.productTaken[status.index].night}" type="checkbox" checked="checked"/>
-                     </c:when>
-                     <c:otherwise>
-                      <input id="_${pt.id}_id_night" name="_${pt.id}_night_name" value="${day.productTaken[status.index].night}" type="checkbox"/>
-                     </c:otherwise>
-                    </c:choose>
-                  </c:if>
-                </td>
-              </tr>
-            </c:forEach>
-        </tbody>
-    </table>
+    
+    <c:choose>
+    	<c:when test="${empty day.productTaken}">
+    		<spring:message code="msg_org_pablog_pills_domain_day_noproducts" />
+    	</c:when>
+    	<c:otherwise>
+		    <table>
+		        <thead>
+		            <tr>
+		                <th/>
+		                <th><spring:message code="label_org_pablog_pills_domain_morning" /></th>
+		                <th><spring:message code="label_org_pablog_pills_domain_midday" /></th>
+		                <th><spring:message code="label_org_pablog_pills_domain_night" /></th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		            <c:forEach items="${day.productTaken}" var="pt" varStatus="status">
+		              <tr>
+		                <td>
+		                    <c:out value="${pt.product.name}"/>
+		                </td>
+		                <td class="alignCenter">
+		                  <c:if test="${pt.product.morningDose > 0}">
+		                    <c:out value="${pt.product.morningDose}   "/>
+		                    <c:choose>
+		                     <c:when test="${day.productTaken[status.index].morning}">
+		                      <input id="_${pt.id}_id_morning" name="_${pt.id}_morning_name" value="${day.productTaken[status.index].morning}" type="checkbox" checked="checked"/>
+		                     </c:when>
+		                     <c:otherwise>
+		                      <input id="_${pt.id}_id_morning" name="_${pt.id}_morning_name" value="${day.productTaken[status.index].morning}" type="checkbox" />
+		                     </c:otherwise>
+		                    </c:choose>
+		                  </c:if>
+		                </td>
+		                <td class="alignCenter">
+		                  <c:if test="${pt.product.middayDose > 0}">
+		                    <c:out value="${pt.product.middayDose}   "/>
+		                    <c:choose>
+		                     <c:when test="${day.productTaken[status.index].midday}">
+		                      <input id="_${pt.id}_id_midday" name="_${pt.id}_midday_name" value="${day.productTaken[status.index].midday}" type="checkbox" checked="checked"/>
+		                     </c:when>
+		                     <c:otherwise>
+		                      <input id="_${pt.id}_id_midday" name="_${pt.id}_midday_name" value="${day.productTaken[status.index].midday}" type="checkbox"/>
+		                     </c:otherwise>
+		                    </c:choose>
+		                  </c:if>
+		                </td>
+		                <td class="alignCenter">
+		                  <c:if test="${pt.product.nightDose > 0}">
+		                    <c:out value="${pt.product.nightDose}   "/>
+		                	<c:choose>
+		                     <c:when test="${day.productTaken[status.index].night}">
+		                      <input id="_${pt.id}_id_night" name="_${pt.id}_night_name" value="${day.productTaken[status.index].night}" type="checkbox" checked="checked"/>
+		                     </c:when>
+		                     <c:otherwise>
+		                      <input id="_${pt.id}_id_night" name="_${pt.id}_night_name" value="${day.productTaken[status.index].night}" type="checkbox"/>
+		                     </c:otherwise>
+		                    </c:choose>
+		                  </c:if>
+		                </td>
+		              </tr>
+		            </c:forEach>
+		        </tbody>
+		    </table>
+    	</c:otherwise>
+    </c:choose>
 </div>

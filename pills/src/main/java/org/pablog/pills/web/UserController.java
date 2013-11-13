@@ -1,6 +1,7 @@
 package org.pablog.pills.web;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,8 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
+import org.pablog.pills.domain.Day;
 import org.pablog.pills.domain.Product;
 import org.pablog.pills.domain.User;
+import org.pablog.pills.service.DayService;
 import org.pablog.pills.service.UserService;
 import org.pablog.pills.util.Role;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +42,7 @@ import flexjson.JSONSerializer;
 @Controller
 public class UserController {
 	@Autowired UserService userService;
+	@Autowired DayService dayService;
 	@Autowired StandardPasswordEncoder pwdEncoder;
 	@Autowired MessageSource messageSource;
 	@Autowired MailSender mailSender;
@@ -109,21 +113,23 @@ public class UserController {
             return "login";
         }
 		
-        uiModel.asMap().clear();
+        templateMessage.setSubject(messageSource.getMessage("mail_new_user_subject", null, httpServletRequest.getLocale()));
+        templateMessage.setText(messageSource.getMessage("mail_new_user_text", new String[]{user.getUsername(),user.getPassword()}, httpServletRequest.getLocale()));
+        templateMessage.setTo(user.getEmail());
+		try{
+			mailSender.send(templateMessage);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
         user.setRole(Role.ROLE_USER.toString());
         String pwd = user.getPassword();
         user.setPassword(pwdEncoder.encode(pwd));
         user.setProducts(new ArrayList<Product>());
         userService.save(user);
+       
         
-        templateMessage.setSubject(messageSource.getMessage("mail_new_user_subject", null, httpServletRequest.getLocale()));
-        templateMessage.setText(messageSource.getMessage("mail_new_user_text", new String[]{user.getUsername(),user.getPassword()}, httpServletRequest.getLocale()));
-        mailSender.send(templateMessage);
-        
-        Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, AuthorityUtils.createAuthorityList(Role.ROLE_USER.toString()));
-    	SecurityContextHolder.getContext().setAuthentication(authentication);
-        
-        return "redirect:/days/current";
+        return "login";
     }
 	/*
 	@RequestMapping(params = "form", produces = "text/html")

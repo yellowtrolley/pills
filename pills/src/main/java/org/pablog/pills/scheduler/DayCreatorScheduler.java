@@ -33,6 +33,9 @@ public class DayCreatorScheduler {
 			day.setProductTaken(new ArrayList<ProductTaken>());
 			day.setUser(u);
 			
+			if(u.getProducts() == null)
+				u.setProducts(new ArrayList<Product>());
+			
 			for(Product p : u.getProducts()) {
 				logger.info("		Adding product: " + p.getName() + " for user: " + u.getUsername());
 				ProductTaken pt = new ProductTaken(p, false, false, false);

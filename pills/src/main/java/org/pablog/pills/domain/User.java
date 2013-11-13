@@ -19,6 +19,18 @@ public class User {
 	private String role;
 	private String email;
 	
+	public User(){};
+	
+	public User(String username, String password, String name, String role,
+			String email, List<Product> products) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.role = role;
+		this.email = email;
+		this.products = products;
+	}
 	@DBRef
 	@CascadeSave
 	List<Product> products;
