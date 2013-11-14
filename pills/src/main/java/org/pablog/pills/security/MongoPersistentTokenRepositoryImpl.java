@@ -34,8 +34,9 @@ public class MongoPersistentTokenRepositoryImpl implements PersistentTokenReposi
  
     @Override
     public PersistentRememberMeToken getTokenForSeries(String seriesId) {
-    	if(seriesId != null) {
-    		RememberMeToken token = this.rememberMeTokenRepository.findBySeries(seriesId);
+    	RememberMeToken token = this.rememberMeTokenRepository.findBySeries(seriesId);
+    	// if for any reason the token has been removed from DB forces user to re-login
+		if(token != null) {
     		return new PersistentRememberMeToken(token.getUsername(), token.getSeries(), token.getTokenValue(), token.getDate());
     	} else {
     		return null;
