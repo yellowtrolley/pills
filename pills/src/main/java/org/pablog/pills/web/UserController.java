@@ -1,7 +1,6 @@
 package org.pablog.pills.web;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,9 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
-import org.pablog.pills.domain.Day;
 import org.pablog.pills.domain.Product;
 import org.pablog.pills.domain.User;
+import org.pablog.pills.security.DefaultUserDetailsService;
 import org.pablog.pills.service.DayService;
 import org.pablog.pills.service.UserService;
 import org.pablog.pills.util.Role;
@@ -22,10 +21,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,47 +47,8 @@ public class UserController {
 	@Autowired MessageSource messageSource;
 	@Autowired MailSender mailSender;
 	@Autowired SimpleMailMessage templateMessage;
-	/*
-	@RequestMapping(value = "/new/{username}/{password}/{role}", produces = "text/html")
-	public String create(@PathVariable("username") String username, @PathVariable("password") String password, @PathVariable("role") String role, Model uiModel) {
-		User user = new User();
-		user.setPassword(pwdEncoder.encode(password));
-		user.setUsername(username);
-		user.setRole(role);
-		userService.save(user);
-        return "redirect:/days/current";
-    }
-	*/
-/*	
-	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
-    public String create(@RequestParam String username, @RequestParam String password,  BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
-		User user = new User();
-		user.setUsername(username);
-		
-		if(userService.findByUsername(user.getUsername()) != null){
-    		bindingResult.addError(new FieldError("user", "username", messageSource.getMessage("error_user_exists", null, httpServletRequest.getLocale())));
-    	}
-		
-		 * @Valid User user
-		@RequestParam(required=false) String confirmPassword,
-		if(!user.getPassword().equals(confirmPassword)){
-    		bindingResult.addError(new FieldError("user", "password", messageSource.getMessage("error_user_passwordConfirm", null, httpServletRequest.getLocale())));
-    	}
-		
-		if (bindingResult.hasErrors()) {
-            populateEditForm(uiModel, user);
-            return "/login";
-        }
-		
-        uiModel.asMap().clear();
-        user.setRole(Role.USER.toString());
-//        String pwd = user.getPassword();
-        user.setPassword(pwdEncoder.encode(password));
-        userService.save(user);
-        
-        return "redirect:/days/current";
-    }
-	*/
+	@Autowired AuthenticationManager authenticationManager;
+	@Autowired DefaultUserDetailsService defaultUserDetailsService;
 	
 	
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
@@ -128,9 +89,18 @@ public class UserController {
         user.setProducts(new ArrayList<Product>());
         userService.save(user);
        
+        // Authenticate user and set session
+        try {
+        	login(user, httpServletRequest);
+        } catch (Exception e) {
+          e.printStackTrace();
+          SecurityContextHolder.getContext().setAuthentication(null);
+          return "login";
+        }
         
-        return "login";
+        return "redirect:/days/current";
     }
+	
 	/*
 	@RequestMapping(params = "form", produces = "text/html")
     public String createForm(Model uiModel) {
@@ -160,4 +130,10 @@ public class UserController {
 	void populateEditForm(Model uiModel, User user) {
         uiModel.addAttribute("user", user);
     }
+	
+	private void login(User user, HttpServletRequest request) throws Exception {
+		UserDetails userDetails = defaultUserDetailsService.loadUserByUsername(user.getUsername());
+		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+	}
 }
