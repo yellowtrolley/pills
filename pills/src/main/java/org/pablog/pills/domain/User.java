@@ -18,6 +18,10 @@ public class User {
 	private String name;
 	private String role;
 	private String email;
+	@DBRef
+	@CascadeSave
+	List<Product> products;
+	
 	
 	public User(){};
 	
@@ -31,9 +35,6 @@ public class User {
 		this.email = email;
 		this.products = products;
 	}
-	@DBRef
-	@CascadeSave
-	List<Product> products;
 
 	public ObjectId getId() {
 		return id;

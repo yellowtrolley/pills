@@ -2,6 +2,7 @@ package org.pablog.pills.repositories;
 import java.util.List;
 
 import org.bson.types.ObjectId;
+import org.pablog.pills.domain.Product;
 import org.pablog.pills.domain.ProductTaken;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
@@ -11,4 +12,5 @@ public interface ProductTakenRepository extends PagingAndSortingRepository<Produ
 
     List<ProductTaken> findAll();
     ProductTaken findById(ObjectId id);
+    ProductTaken findByProduct(Product product);
 }

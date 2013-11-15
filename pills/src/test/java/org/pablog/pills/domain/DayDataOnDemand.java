@@ -33,7 +33,7 @@ public class DayDataOnDemand {
 	}
 	
 	public void init() {
-		User user = new User();
+		user = new User();
 		user.setName("testUser");
 		user.setPassword("testPassword");
 		user = userService.save(user);
@@ -59,7 +59,7 @@ public class DayDataOnDemand {
 		dayService.delete(day);
 		
 		for(Product p : products)
-			productService.delete(p);
+			productService.delete(p, user);
 		
 		userService.delete(user);
 	}

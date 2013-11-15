@@ -26,7 +26,7 @@
     
     <c:choose>
     	<c:when test="${empty day.productTaken}">
-    		<spring:message code="msg_org_pablog_pills_domain_day_noproducts" />
+    		<span class="noProductsMsg"><spring:message code="msg_org_pablog_pills_domain_day_noproducts" /></span>
     	</c:when>
     	<c:otherwise>
 		    <table>

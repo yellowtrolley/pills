@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.bson.types.ObjectId;
 import org.pablog.pills.domain.Day;
 import org.pablog.pills.domain.Product;
+import org.pablog.pills.domain.ProductTaken;
 import org.pablog.pills.domain.User;
 import org.pablog.pills.service.DayService;
 import org.pablog.pills.service.ProductService;
@@ -98,12 +99,8 @@ public class ProductController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String delete(@ActiveUser User activeUser, @PathVariable("id") ObjectId id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-		Product product = productService.findById(id);
-		if(activeUser.getProducts().contains(product)) {
-			activeUser.getProducts().remove(product);
-			userService.save(activeUser);
-			productService.delete(product);
-		}
+		productService.delete(productService.findById(id), activeUser);
+		
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
