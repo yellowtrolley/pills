@@ -118,7 +118,7 @@
     <br />
     <br />
     <spring:message code="label_org_pablog_pills_domain_user_register" var="register_label" htmlEscape="false" />
-    <pform:create cssClass="registerForm" id="fc_org_pablog_pills_domain_User" label="${register_label}" openPane="${not empty register_error}" modelAttribute="user" path="/users" render="${empty dependencies}" z="">
+    <pform:create cssClass="registerForm" id="fc_org_pablog_pills_domain_User" label="${register_label}" buttonMessageCode="label_org_pablog_pills_domain_user_register" openPane="${not empty register_error}" modelAttribute="user" path="/users" render="${empty dependencies}" z="">
     	<div class="errors"><jsp:text/></div>
         <field:input field="username" id="c_org_pablog_pills_domain_User_username" z=""/>
         <field:input field="password" id="c_org_pablog_pills_domain_User_password" type="password" z=""/>

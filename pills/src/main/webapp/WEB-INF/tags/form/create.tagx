@@ -7,6 +7,7 @@
   <jsp:directive.attribute name="compositePkField" type="java.lang.String" required="false" rtexprvalue="true" description="The field name of the composite primary key (only used if a composite PK is present in the form backing object)" />
   <jsp:directive.attribute name="multipart" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicate if this is a multipart form (default: false)" />
   <jsp:directive.attribute name="label" type="java.lang.String" required="false" rtexprvalue="true" description="The label used for this object, will default to a message bundle if not supplied"/>
+  <jsp:directive.attribute name="buttonMessageCode" type="java.lang.String" required="false" rtexprvalue="true" description="The message bundle used for the submit button, will default to a button_save if not supplied"/>
   <jsp:directive.attribute name="cssClass" type="java.lang.String" required="false" rtexprvalue="true" description="The css class to apply to the form"/>
   <jsp:directive.attribute name="render" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicate if the contents of this tag and all enclosed tags should be rendered (default 'true')" />
   <jsp:directive.attribute name="openPane" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Control if the title pane is opened or closed by default (default: true)"/>
@@ -57,7 +58,10 @@
         </c:if>
         <jsp:doBody />
         <div class="submit" id="${fn:escapeXml(id)}_submit">
-          <spring:message code="button_save" var="save_button" htmlEscape="false" />
+          <c:if test="${empty buttonMessageCode}">
+            <c:set var="buttonMessageCode" value="button_save"/>
+          </c:if>
+          <spring:message code="${buttonMessageCode}" var="save_button" htmlEscape="false" />
           <script type="text/javascript">Spring.addDecoration(new Spring.ValidateAllDecoration({elementId:'proceed', event:'onclick'}));</script>
           <input id="proceed" type="submit" value="${fn:escapeXml(save_button)}"/>
         </div>

@@ -197,8 +197,13 @@ h4 {
 	line-height: 20px;
 }
 
+
+.tundra .dijitError {
+    border: 2px solid #FF0F00;
+}
+
 .errors {
-	color: red;
+	color: #F9F7BA;
 	font-weight: bold;
 	display: block;
 	margin-left: 105px;
