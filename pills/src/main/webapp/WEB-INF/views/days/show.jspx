@@ -31,6 +31,9 @@
     	<c:otherwise>
 		    <table>
 		        <thead>
+		        	<tr>
+		        		<th colspan="3"><spring:message code="label_org_pablog_pills_domain_day" />: ${day.theDate}</th>
+		        	</tr>
 		            <tr>
 		                <th/>
 		                <th><spring:message code="label_org_pablog_pills_domain_morning" /></th>
