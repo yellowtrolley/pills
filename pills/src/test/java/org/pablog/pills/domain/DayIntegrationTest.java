@@ -1,115 +1,83 @@
 package org.pablog.pills.domain;
-import java.util.Iterator;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.verify;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-
-import org.bson.types.ObjectId;
-import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.pablog.pills.repositories.DayRepository;
-import org.pablog.pills.repositories.UserRepository;
+import org.kubek2k.springockito.annotations.ReplaceWithMock;
+import org.kubek2k.springockito.annotations.SpringockitoContextLoader;
+import org.pablog.pills.service.DayService;
+import org.pablog.pills.util.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-//@Configurable
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations = "classpath*:/META-INF/spring/applicationContext*.xml")
+@Configurable
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(loader = SpringockitoContextLoader.class, locations = "classpath*:/META-INF/spring/applicationContext*.xml")
 public class DayIntegrationTest {
-	@Autowired DayDataOnDemand dod;
+	@ReplaceWithMock
+	@Autowired
+    private User user;
 	
-	/*
-	@Test
-    public void testUserCreation() {
-		User user = dod.getTestUser();
-		Assert.assertNotNull("Expected 'User' failed to initialize correctly", user);
-		Assert.assertNotNull("Expected 'User' identifier to not be null", user.getId());
-}
+	@ReplaceWithMock
+	@Autowired
+	private Day day;
 	
-    @Test
-    public void testDayCreation() {
-    	Day day = dod.getTestDay();
-		Assert.assertNotNull("Data on demand for 'Day' failed to initialize correctly", day);
-		Assert.assertNotNull("Expected 'Day' identifier to not be null", day.getId());
-    }
-*/    
-    
-    /*
-	@Autowired DayRepository dayRepository;
-	@Autowired UserRepository userRepository;
-
+	@ReplaceWithMock
+	@Autowired
+	private DayService dayService;
+	
+	@Autowired 
+	PasswordEncoder pwdEncoder;
+	
+	SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+	
+	@Before
+	public void setUp() throws Exception {
+		user = new User();
+		user.setPassword(pwdEncoder.encode("foo"));
+		user.setUsername("foo");
+		user.setRole(Role.ROLE_AMMIN.toString());
+		
+        List<Product> data = new ArrayList<Product>();
+        data.add(new Product("Domperidona 10 mg",1,1,1));
+        data.add(new Product("Plenur 400 mg",0.5,0,1));
+        data.add(new Product("Labileno 100 mg",1,0,1));
+        data.add(new Product("Lansoprazon 30 mg",1, 0,1));
+        data.add(new Product("Rivotril 0,5 mg",1,1,2));
+        data.add(new Product("Zyprexa 10 mg",1,0,1));
+        data.add(new Product("Noctamid 1 mg",0,0,1));
+        data.add(new Product("Mysoline  250 mg",0,0,1));
+        user.setProducts(data);
+	}
+	
 	@Test
-    public void testCount() {
-        Assert.assertNotNull("Data on demand for 'Day' failed to initialize correctly", dod.getRandomDay());
-        long count = dayRepository.count();
-        Assert.assertTrue("Counter for 'Day' incorrectly reported there were no entries", count > 0);
-    }
-
-	@Test
-    public void testFind() {
-        Day obj = dod.getRandomDay();
-        Assert.assertNotNull("Data on demand for 'Day' failed to initialize correctly", obj);
-        ObjectId id = obj.getId();
-        Assert.assertNotNull("Data on demand for 'Day' failed to provide an identifier", id);
-        obj = dayRepository.findById(id);
-        Assert.assertNotNull("Find method for 'Day' illegally returned null for id '" + id + "'", obj);
-        Assert.assertEquals("Find method for 'Day' returned the incorrect identifier", id, obj.getId());
-    }
-
-	@Test
-    public void testFindByUser() {
-        Assert.assertNotNull("Data on demand for 'Day' failed to initialize correctly", dod.getRandomDay());
-        long count = dayRepository.count();
-        User user = userRepository.findByUsername("salva");
-        Assert.assertTrue("Too expensive to perform a find all test for 'Day', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<Day> result = dayRepository.findByUser(user);
-        Assert.assertNotNull("Find all method for 'Day' illegally returned null", result);
-//        Assert.assertTrue("Find all method for 'Day' failed to return any data", result.size() > 0);
-    }
-
-	@Test
-    public void testFindEntries() {
-        Assert.assertNotNull("Data on demand for 'Day' failed to initialize correctly", dod.getRandomDay());
-        long count = dayRepository.count();
-        if (count > 20) count = 20;
-        int firstResult = 0;
-        int maxResults = (int) count;
-        List<Day> result = dayRepository.findAll(new org.springframework.data.domain.PageRequest(firstResult / maxResults, maxResults)).getContent();
-        Assert.assertNotNull("Find entries method for 'Day' illegally returned null", result);
-        Assert.assertEquals("Find entries method for 'Day' returned an incorrect number of entries", count, result.size());
-    }
-
-	@Test
-    public void testSave() {
-        Assert.assertNotNull("Data on demand for 'Day' failed to initialize correctly", dod.getRandomDay());
-        Day obj = dod.getNewTransientDay(Integer.MAX_VALUE);
-        Assert.assertNotNull("Data on demand for 'Day' failed to provide a new transient entity", obj);
-        Assert.assertNull("Expected 'Day' identifier to be null", obj.getId());
-        try {
-            dayRepository.save(obj);
-        } catch (final ConstraintViolationException e) {
-            final StringBuilder msg = new StringBuilder();
-            for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {
-                final ConstraintViolation<?> cv = iter.next();
-                msg.append("[").append(cv.getRootBean().getClass().getName()).append(".").append(cv.getPropertyPath()).append(": ").append(cv.getMessage()).append(" (invalid value = ").append(cv.getInvalidValue()).append(")").append("]");
-            }
-            throw new IllegalStateException(msg.toString(), e);
-        }
-        Assert.assertNotNull("Expected 'Day' identifier to no longer be null", obj.getId());
-    }
-	@Test
-    public void testDelete() {
-        Day obj = dod.getRandomDay();
-        Assert.assertNotNull("Data on demand for 'Day' failed to initialize correctly", obj);
-        ObjectId id = obj.getId();
-        Assert.assertNotNull("Data on demand for 'Day' failed to provide an identifier", id);
-        obj = dayRepository.findById(id);
-        dayRepository.delete(obj);
-        Assert.assertNull("Failed to remove 'Day' with identifier '" + id + "'", dayRepository.findById(id));
-    }
-	 */
+	public void testDayCreation() {
+		// given
+		day = new Day(user, formatter.format(new Date()), new ArrayList<ProductTaken>());
+		
+		// when
+		dayService.createDay(user);
+		
+		// then
+		verify(dayService).createDay(user);
+		assertEquals(formatter.format(new Date()), day.getTheDate());
+		assertNotNull(day.getUser());
+		assertNotNull(day.getProductTaken());
+		for(ProductTaken pt : day.getProductTaken()) {
+			assertFalse(pt.isMorning());
+			assertFalse(pt.isMidday());
+			assertFalse(pt.isNight());
+		}
+	}
+	
 }

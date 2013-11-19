@@ -29,6 +29,15 @@ public class Day {
     @CascadeSave
     private List<ProductTaken> productTaken = new ArrayList<ProductTaken>();
     
+    
+    
+	public Day(User user, String theDate, List<ProductTaken> productTaken) {
+		super();
+		this.user = user;
+		this.theDate = theDate;
+		this.productTaken = productTaken;
+	}
+
 	public String toJson() {
         return new JSONSerializer().exclude("*.class").serialize(this);
     }

@@ -28,9 +28,7 @@ public class DayServiceImpl implements DayService {
 	public Day createDay(User user) {
 		logger.info("Start creating new treatment day time: " + new Date());
 		logger.info("	Creating program for user: " + user.getUsername());
-		Day day = new Day();
-		day.setTheDate(formatter.format(new Date()));
-		day.setProductTaken(new ArrayList<ProductTaken>());
+		Day day = new Day(user, formatter.format(new Date()), new ArrayList<ProductTaken>());
 		day.setUser(user);
 		
 		for(Product p : user.getProducts()) {

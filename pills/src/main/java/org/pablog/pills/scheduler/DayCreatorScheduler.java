@@ -2,7 +2,6 @@ package org.pablog.pills.scheduler;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
@@ -28,9 +27,7 @@ public class DayCreatorScheduler {
 		logger.info("Start creating new treatment day time: " + new Date());
 		for(User u : userRepository.findAll()) {
 			logger.info("	Creating program for user: " + u.getUsername());
-			Day day = new Day();
-			day.setTheDate(formatter.format(new Date()));
-			day.setProductTaken(new ArrayList<ProductTaken>());
+			Day day = new Day(u, formatter.format(new Date()), new ArrayList<ProductTaken>());
 			day.setUser(u);
 			
 			if(u.getProducts() == null)
