@@ -33,13 +33,11 @@ public class DefaultUserDetailsService  implements UserDetailsService {
 			throw new UsernameNotFoundException("User not found");
 		}
 		
+		List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
+		for(String role : user.getRoles())
+			authorities.add(new SimpleGrantedAuthority(role));
 		
-		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), true, true, true, true, getAuthorities());
+		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), true, true, true, true, authorities);
 	}
 	
-	private Collection<? extends GrantedAuthority> getAuthorities() {
-		List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
-		authorities.add(new SimpleGrantedAuthority("ADMIN"));
-		return authorities;
-	}
 }

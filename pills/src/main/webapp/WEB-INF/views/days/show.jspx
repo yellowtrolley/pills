@@ -9,17 +9,15 @@
 	  		    var idPT = id.substring(1, id.indexOf('_id'));
 	  		    var time = id.substring(id.indexOf('_id_')+4);
 	  		    var checked = $(this).is(':checked');
-			  	$.ajax( {
+			  	$.ajax({
 		            dataType: 'json',
 		            contentType: "application/json;charset=UTF-8",
 					type: 'POST',
 					url: contextPath+'/producttakens/'+idPT+'/'+time+'/'+checked,
-		            // success: fnCallback,
 					timeout: 50000,
-		            error : function (e) {
-		            	$('#error').html(e.responseText);
-		            }
-		        } );
+		        }).fail(function(jqXHR) {
+		        	alert(jqXHR);
+		        });
 	  		});
 	  	});
     </script>

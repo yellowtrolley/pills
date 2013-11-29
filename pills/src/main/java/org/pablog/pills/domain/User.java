@@ -16,7 +16,7 @@ public class User {
 	private String username;
 	private String password;
 	private String name;
-	private String role;
+	private List<String> roles;
 	private String email;
 	@DBRef
 	@CascadeSave
@@ -25,13 +25,13 @@ public class User {
 	
 	public User(){};
 	
-	public User(String username, String password, String name, String role,
+	public User(String username, String password, String name, List<String> roles,
 			String email, List<Product> products) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.name = name;
-		this.role = role;
+		this.roles = roles;
 		this.email = email;
 		this.products = products;
 	}
@@ -73,16 +73,18 @@ public class User {
 	public void setProducts(List<Product> products) {
 		this.products = products;
 	}
-	public String getRole() {
-		return role;
-	}
-	public void setRole(String role) {
-		this.role = role;
-	}
 	public String getEmail() {
 		return email;
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
 }

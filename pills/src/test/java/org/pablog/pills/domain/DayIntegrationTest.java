@@ -46,7 +46,9 @@ public class DayIntegrationTest {
 		user = new User();
 		user.setPassword(pwdEncoder.encode("foo"));
 		user.setUsername("foo");
-		user.setRole(Role.ROLE_AMMIN.toString());
+		List<String> roles = new ArrayList<>();
+		roles.add(Role.ROLE_USER.toString());
+		user.setRoles(roles);
 		
         List<Product> data = new ArrayList<Product>();
         data.add(new Product("Domperidona 10 mg",1,1,1));

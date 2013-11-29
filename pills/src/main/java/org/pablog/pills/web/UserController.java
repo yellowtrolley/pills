@@ -83,9 +83,9 @@ public class UserController {
 			e.printStackTrace();
 		}
 		
-        user.setRole(Role.ROLE_USER.toString());
-        String pwd = user.getPassword();
-        user.setPassword(pwdEncoder.encode(pwd));
+        user.setRoles(new ArrayList<String>());
+        user.getRoles().add(Role.ROLE_USER.toString());
+        user.setPassword(pwdEncoder.encode(user.getPassword()));
         user.setProducts(new ArrayList<Product>());
         userService.save(user);
        
