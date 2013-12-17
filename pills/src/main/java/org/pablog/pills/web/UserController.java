@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
+import org.bson.types.ObjectId;
 import org.pablog.pills.domain.Product;
 import org.pablog.pills.domain.User;
 import org.pablog.pills.security.DefaultUserDetailsService;
@@ -31,6 +32,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -123,6 +125,13 @@ public class UserController {
         }
         
         return new ResponseEntity<String>(new JSONSerializer().exclude("*.class").serialize(result), headers, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/{id}", produces = "text/html")
+    public String show(@PathVariable("id") ObjectId id, Model uiModel) {
+        uiModel.addAttribute("utente", userService.findById(id));
+        uiModel.addAttribute("utenteId", id);
+        return "utentes/show";
     }
 	
 //	@PreAuthorize("hasRole('ROLE_AMMIN')")

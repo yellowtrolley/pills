@@ -29,5 +29,5 @@
         <!-- <constructor-arg name="mongoConverter" ref="mappingConverter"/> -->
     </bean>
     
-	<bean class="org.pablog.pills.mongo.CascadingMongoEventListener" />
+	<bean class="org.pablog.pills.mongo.mapping.event.CascadingMongoEventListener" />
 </beans>

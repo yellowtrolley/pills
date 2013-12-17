@@ -3,7 +3,8 @@ package org.pablog.pills.domain;
 import java.util.List;
 
 import org.bson.types.ObjectId;
-import org.pablog.pills.mongo.CascadeSave;
+import org.pablog.pills.mongo.mapping.Cascade;
+import org.pablog.pills.mongo.mapping.CascadeType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -19,7 +20,7 @@ public class User {
 	private List<String> roles;
 	private String email;
 	@DBRef
-	@CascadeSave
+	@Cascade(cascadeType = CascadeType.ALL)
 	List<Product> products;
 	
 	

@@ -8,7 +8,6 @@ import javax.validation.Valid;
 import org.bson.types.ObjectId;
 import org.pablog.pills.domain.Day;
 import org.pablog.pills.domain.Product;
-import org.pablog.pills.domain.ProductTaken;
 import org.pablog.pills.domain.User;
 import org.pablog.pills.service.DayService;
 import org.pablog.pills.service.ProductService;
@@ -31,6 +30,7 @@ public class ProductController {
 	@Autowired ProductService productService;
 	@Autowired UserService userService;
 	@Autowired DayService dayService;
+	
 	
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String create(@ActiveUser User activeUser, @Valid Product product, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
